@@ -1,9 +1,7 @@
 let mapleader = ","
 inoremap jj <ESC>
-function Meow()
-  echom "Meow!"
-endfunction
 call plug#begin()
+
 
 if (!exists('g:vscode'))
   Plug 'easymotion/vim-easymotion'
@@ -16,15 +14,29 @@ if (!exists('g:vscode'))
   Plug 'francoiscabrol/ranger.vim'
   Plug 'rbgrouleff/bclose.vim'
   Plug 'ms-jpq/chadtree'
-
+  Plug 'chentoast/marks.nvim'
+" marks are in ~/.local/share/nvim/shada/main.shada
+  Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
 endif
 call plug#end()
-
+lua << EOF
+  require'marks'.setup {
+    default_mappings = true,
+    signs = true,
+    mappings = {}
+  }
+  require'lspconfig'.gopls.setup {
+    on_attach = function(client)
+      -- [[ other on_attach code ]]
+  require 'illuminate'.on_attach(client)
+    end,
+  }
+EOF
 if has('persistent_undo')
   set undofile
   set undodir=$HOME/.vim/undo
 endif
-
+colorscheme desert
 set completeopt=menu,menuone,noselect
 set title
 set bg=dark
@@ -96,6 +108,8 @@ let airline#extensions#ale#close_lnum_symbol = ')'
 
 if exists('g:vscode')
 else
-    let g:coq_settings = { 'auto_start': v:true }
+"    let g:coq_settings = { 'auto_start': v:true }
     " ordinary neovim
 endif
+
+" :highlight Pmenu ctermbg=gray guibg=gray
