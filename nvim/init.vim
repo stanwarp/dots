@@ -1,115 +1,363 @@
-let mapleader = ","
-inoremap jj <ESC>
-call plug#begin()
+local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+	vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
+end
 
-if (!exists('g:vscode'))
-  Plug 'easymotion/vim-easymotion'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-  Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-  Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'francoiscabrol/ranger.vim'
-  Plug 'rbgrouleff/bclose.vim'
-  Plug 'ms-jpq/chadtree'
-  Plug 'chentoast/marks.nvim'
-" marks are in ~/.local/share/nvim/shada/main.shada
-  Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
-endif
-call plug#end()
-lua << EOF
-  require'marks'.setup {
-    default_mappings = true,
-    signs = true,
-    mappings = {}
-  }
-  require'lspconfig'.gopls.setup {
-    on_attach = function(client)
-      -- [[ other on_attach code ]]
-  require 'illuminate'.on_attach(client)
-    end,
-  }
-EOF
-if has('persistent_undo')
-  set undofile
-  set undodir=$HOME/.vim/undo
-endif
-colorscheme desert
-set completeopt=menu,menuone,noselect
-set title
-set bg=dark
-set mouse=a
-set nohlsearch
-set clipboard+=unnamedplus
-set noshowmode
-set noruler
-set noshowcmd
-set tabstop=2
-set shiftwidth=2
-set expandtab
-" Some basics:
- set nocompatible
- filetype plugin on
- syntax on
- set encoding=utf-8
- set number relativenumber
-" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
- set splitbelow splitright
+local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
+vim.api.nvim_create_autocmd(
+	"BufWritePost",
+	{ command = "source <afile> | PackerCompile", group = packer_group, pattern = "init.lua" }
+)
 
-nmap <Leader>s <Plug>(easymotion-s)
-let g:EasyMotion_do_mapping = 0 " Disable default mappings 
-let g:EasyMotion_smartcase = 1
+require("packer").startup(function(use)
+	use "wbthomason/packer.nvim"
 
-" Replace all is aliased to S.
-nnoremap S :%s//g<Left><Left>
+	use "andweeb/presence.nvim"
+	use { "catppuccin/nvim", as = "catppuccin" }
+	use "glepnir/dashboard-nvim"
+	use "hrsh7th/cmp-nvim-lsp"
+	use "hrsh7th/nvim-cmp"
+	use "jose-elias-alvarez/null-ls.nvim"
+	use "kyazdani42/nvim-web-devicons"
+	use "L3MON4D3/LuaSnip"
+	use "lewis6991/gitsigns.nvim"
+	use "neovim/nvim-lspconfig"
+	use "nvim-lua/plenary.nvim"
+	use "nvim-lualine/lualine.nvim"
+	use "nvim-telescope/telescope.nvim"
+	use "nvim-telescope/telescope-file-browser.nvim"
+	use "nvim-treesitter/nvim-treesitter"
+	use "onsails/lspkind-nvim"
+	use "ryanoasis/vim-devicons"
+	use "saadparwaiz1/cmp_luasnip"
+	use "simrat39/rust-tools.nvim"
+	use "tpope/vim-commentary"
+	use "williamboman/nvim-lsp-installer"
+	use "windwp/nvim-autopairs"
+	use "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
+end)
 
- " Save file as sudo on files that require root permission
-cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+vim.o.clipboard = "unnamedplus"
+vim.o.ignorecase = true
+vim.o.lazyredraw = true
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.shiftwidth = 2
+vim.o.splitbelow = true
+vim.o.splitright = true
+vim.o.tabstop = 2
+vim.o.termguicolors = true
+vim.o.updatetime = 100
 
-" Function for toggling the bottom statusbar:
-let s:hidden_all = 0
-function! ToggleHiddenAll()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
-        set noshowmode
-        set noruler
-        set laststatus=0
-        set noshowcmd
-    else
-        let s:hidden_all = 0
-       set showmode
-        set ruler
-        set laststatus=2
-        set showcmd
-    endif
-endfunction
+vim.g.mapleader = " "
 
-nnoremap <leader>h :call ToggleHiddenAll()<CR>
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+vim.keymap.set("n", "<Leader>w", "<C-w>k")
+vim.keymap.set("n", "<Leader>a", "<C-w>h")
+vim.keymap.set("n", "<Leader>s", "<C-w>j")
+vim.keymap.set("n", "<Leader>d", "<C-w>l")
+vim.keymap.set("n", "<Leader>j", ":bprevious<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>k", ":bnext<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>q", ":bprevious<CR>:bdelete #<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>/", ":nohlsearch<CR>", { silent = true })
+vim.keymap.set("n", "<Leader>y", ":%y<CR>")
+vim.keymap.set("n", "k", "gk", { silent = true })
+vim.keymap.set("n", "j", "gj", { silent = true })
+vim.keymap.set("n", "<Leader>l", ":vsplit term://fish <CR>", { silent = true })
+vim.keymap.set("t", "<Leader><Esc>", "<C-\\><C-n>", { silent = true })
+vim.keymap.set("n", "<Leader>v", ":edit ~/.config/nvim/init.lua<CR>", { silent = true })
 
-setlocal shiftwidth=2 tabstop=2
-" Adding the custom source to unite
-let g:webdevicons_enable_unite = 1
+local lang_maps = {
+	cpp = { build = "g++ % -o %:r", exec = "./%:r" },
+	typescript = { build = "deno compile %", exec = "deno run %" },
+	javascript = { build = "deno compile %", exec = "deno run %" },
+	python = { exec = "python %" },
+	java = { build = "javac %", exec = "java %:r" },
+	sh = { exec = "./%" },
+	go = { build = "go build", exec = "go run %" },
+	rust = { exec = "cargo run" },
+	arduino = {
+		build = "arduino-cli compile --fqbn arduino:avr:uno %:r",
+		exec = "arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno %:r",
+	},
+}
+for lang, data in pairs(lang_maps) do
+	if data.build ~= nil then
+		vim.api.nvim_create_autocmd(
+			"FileType",
+			{ command = "nnoremap <Leader>b :!" .. data.build .. "<CR>", pattern = lang }
+		)
+	end
+	vim.api.nvim_create_autocmd(
+		"FileType",
+		{ command = "nnoremap <Leader>e :split<CR>:terminal " .. data.exec .. "<CR>", pattern = lang }
+	)
+end
+vim.api.nvim_create_autocmd("BufWritePre", {
+	command = "lua vim.lsp.buf.formatting_sync(nil, 1000)",
+	pattern = "*.cpp,*.css,*.go,*.h,*.html,*.js,*.json,*.jsx,*.lua,*.md,*.py,*.rs,*.ts,*.tsx,*.yaml",
+})
+vim.api.nvim_create_autocmd("InsertEnter", { command = "set norelativenumber", pattern = "*" })
+vim.api.nvim_create_autocmd("InsertLeave", { command = "set relativenumber", pattern = "*" })
+vim.api.nvim_create_autocmd("TermOpen", { command = "startinsert", pattern = "*" })
+vim.api.nvim_create_autocmd("BufWinEnter", { command = "set noexpandtab tabstop=2 shiftwidth=2", pattern = "*.rs" })
 
-" Adding to vim-airline's statusline
-let g:webdevicons_enable_airline_statusline = 1
-let g:airline_powerline_fonts = 1
+vim.cmd "sign define DiagnosticSignError text=● texthl=DiagnosticSignError"
+vim.cmd "sign define DiagnosticSignWarn text=● texthl=DiagnosticSignWarn"
+vim.cmd "sign define DiagnosticSignInfo text=● texthl=DiagnosticSignInfo"
+vim.cmd "sign define DiagnosticSignHint text=● texthl=DiagnosticSignHint"
 
-" AIRLINE SETTINGS
-let g:airline_theme='sol'
-let g:airline#extensions#ale#enabled = 1
-let airline#extensions#ale#error_symbol = 'E:'
-let airline#extensions#ale#warning_symbol = 'W:'
-let airline#extensions#ale#show_line_numbers = 1
-let airline#extensions#ale#open_lnum_symbol = '(L'
-let airline#extensions#ale#close_lnum_symbol = ')'
-" let g:airline_right_sep = '☠'
+vim.diagnostic.config { virtual_text = false }
 
-if exists('g:vscode')
-else
-"    let g:coq_settings = { 'auto_start': v:true }
-    " ordinary neovim
-endif
+require("presence"):setup {
+	neovim_image_text = "Neovim",
+	presence_log_level = "error",
+	presence_editing_text = "Editing « %s »",
+	presence_file_explorer_text = "Browsing files",
+	presence_reading_text = "Reading  « %s »",
+	presence_workspace_text = "Working on « %s »",
+}
 
-" :highlight Pmenu ctermbg=gray guibg=gray
+vim.g.catppuccin_flavour = "mocha"
+vim.cmd "colorscheme catppuccin"
+
+local db = require "dashboard"
+db.custom_header = {
+	"",
+	"",
+	"",
+	"",
+	" ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
+	" ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
+	" ██╔██╗ ██║ ██║     ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
+	" ██║╚██╗██║ ██║     ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
+	" ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
+	" ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+	"",
+	"",
+	"",
+}
+db.custom_center = {
+	{
+		icon = " ",
+		desc = "New File            ",
+		action = "DashboardNewFile",
+		shortcut = "SPC o",
+	},
+	{
+		icon = " ",
+		desc = "Browse Files        ",
+		action = "Telescope file_browser",
+		shortcut = "SPC n",
+	},
+	{
+		icon = " ",
+		desc = "Find File           ",
+		action = "Telescope find_files",
+		shortcut = "SPC f",
+	},
+	{
+		icon = " ",
+		desc = "Configure Neovim    ",
+		action = "edit ~/.config/nvim/lua/init.lua",
+		shortcut = "SPC v",
+	},
+	{
+		icon = " ",
+		desc = "Exit Neovim              ",
+		action = "quit",
+	},
+}
+vim.keymap.set("n", "<Leader>o", ":DashboardNewFile<CR>", { silent = true })
+
+local luasnip = require "luasnip"
+local cmp = require "cmp"
+cmp.setup {
+	snippet = {
+		expand = function(args)
+			luasnip.lsp_expand(args.body)
+		end,
+	},
+	mapping = cmp.mapping.preset.insert {
+		["<C-Space>"] = cmp.mapping.complete(),
+		["<CR>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true },
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<S-Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_prev_item()
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+	},
+	sources = { { name = "nvim_lsp" }, { name = "luasnip" } },
+}
+
+local servers = {
+	"bashls",
+	"clangd",
+	"cssls",
+	"gopls",
+	"html",
+	"pyright",
+	"rust_analyzer",
+	"sumneko_lua",
+	"tailwindcss",
+	"tsserver",
+}
+local has_formatter = { "gopls", "html", "rust_analyzer", "sumneko_lua", "tsserver" }
+for _, name in pairs(servers) do
+	local found, server = require("nvim-lsp-installer").get_server(name)
+	if found and not server:is_installed() then
+		print("Installing " .. name)
+		server:install()
+	end
+end
+local setup_server = {
+	sumneko_lua = function(opts)
+		opts.settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+	end,
+}
+require("nvim-lsp-installer").on_server_ready(function(server)
+	local opts = {
+		on_attach = function(client, bufnr)
+			vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+			local opts = { buffer = bufnr }
+			vim.keymap.set("n", "<Leader>h", vim.lsp.buf.hover, opts)
+			vim.keymap.set("n", "<Leader>i", vim.lsp.buf.definition, opts)
+			vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename, opts)
+			local should_format = true
+			for _, value in pairs(has_formatter) do
+				if client.name == value then
+					should_format = false
+				end
+			end
+			if not should_format then
+				client.resolved_capabilities.document_formatting = false
+			end
+		end,
+		capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+	}
+	if setup_server[server.name] then
+		setup_server[server.name](opts)
+	end
+	server:setup(opts)
+end)
+
+local null_ls = require "null-ls"
+null_ls.setup {
+	sources = {
+		null_ls.builtins.diagnostics.eslint_d,
+		null_ls.builtins.formatting.autopep8,
+		null_ls.builtins.formatting.eslint_d,
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.prettierd,
+		null_ls.builtins.formatting.rustfmt,
+		null_ls.builtins.formatting.stylua,
+	},
+}
+
+require("gitsigns").setup {
+	signs = {
+		add = { text = "+" },
+		change = { text = "~" },
+		delete = { text = "_" },
+		topdelete = { text = "‾" },
+		changedelete = { text = "~" },
+	},
+}
+
+local cp = require("catppuccin.palettes.init").get_palette()
+local custom_catppuccin = require "lualine.themes.catppuccin"
+custom_catppuccin.normal.b.bg = cp.surface0
+custom_catppuccin.normal.c.bg = cp.base
+custom_catppuccin.insert.b.bg = cp.surface0
+custom_catppuccin.command.b.bg = cp.surface0
+custom_catppuccin.visual.b.bg = cp.surface0
+custom_catppuccin.replace.b.bg = cp.surface0
+custom_catppuccin.inactive.a.bg = cp.base
+custom_catppuccin.inactive.b.bg = cp.base
+custom_catppuccin.inactive.b.fg = cp.surface0
+custom_catppuccin.inactive.c.bg = cp.base
+require("lualine").setup {
+	options = {
+		theme = custom_catppuccin,
+		component_separators = "|",
+		section_separators = { left = "", right = "" },
+	},
+	sections = {
+		lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
+		lualine_b = { "filename", "branch", { "diff", colored = false } },
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = { "filetype", "progress" },
+		lualine_z = { { "location", separator = { right = "" }, left_padding = 2 } },
+	},
+	inactive_sections = {
+		lualine_a = { "filename" },
+		lualine_b = {},
+		lualine_c = {},
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = {},
+	},
+	tabline = {
+		lualine_a = {
+			{
+				"buffers",
+				separator = { left = "", right = "" },
+				right_padding = 2,
+				symbols = { alternate_file = "" },
+			},
+		},
+	},
+}
+
+local telescope = require "telescope"
+telescope.setup {
+	defaults = {
+		mappings = { n = { ["o"] = require("telescope.actions").select_default } },
+		initial_mode = "normal",
+		hidden = true,
+		file_ignore_patterns = { ".git/", "node_modules/", "target/" },
+	},
+	extensions = { file_browser = { hidden = true } },
+}
+telescope.load_extension "file_browser"
+vim.keymap.set("n", "<Leader>n", telescope.extensions.file_browser.file_browser)
+vim.keymap.set("n", "<Leader>f", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<Leader>t", require("telescope.builtin").treesitter)
+
+require("nvim-treesitter.configs").setup {
+	ensure_installed = {
+		"bash",
+		"cpp",
+		"css",
+		"go",
+		"html",
+		"lua",
+		"make",
+		"python",
+		"rust",
+		"tsx",
+		"typescript",
+		"yaml",
+	},
+	highlight = { enable = true },
+}
+
+require("rust-tools").setup {}
+
+vim.keymap.set({ "n", "v" }, "<Leader>c", ":Commentary<CR>", { silent = true })
+
+require("nvim-autopairs").setup {}
+
+require("lsp_lines").setup {}
+vim.keymap.set("n", "<Leader>x", require("lsp_lines").toggle)
