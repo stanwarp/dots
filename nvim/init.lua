@@ -3,7 +3,6 @@ local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.n
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
-
 local packer_group = vim.api.nvim_create_augroup("packer", { clear = true })
 vim.api.nvim_create_autocmd(
 	"bufwritepost",
@@ -49,7 +48,8 @@ vim.o.splitright = true
 vim.o.tabstop = 2
 vim.o.termguicolors = true
 vim.o.updatetime = 100
-
+vim.o.undofile = true
+vim.o.undodir = ".vim/undodir"
 vim.g.mapleader = " "
 
 vim.keymap.set({ "n", "v" }, "<space>", "<nop>", { silent = true })
@@ -204,9 +204,7 @@ local has_formatter = { "gopls", "html", "rust_analyzer", "sumneko_lua", "tsserv
 for _, name in pairs(servers) do
 	local found, server = require("nvim-lsp-installer").get_server(name)
 	if found and not server:is_installed() then
-		print("yep")
-		print("installing " .. name)
-		print("yyeeeapp")
+		-- print("installing " .. name)
 		server:install()
 	end
 end
@@ -345,7 +343,7 @@ require("nvim-treesitter.configs").setup({
 
 require("rust-tools").setup({})
 
-vim.keymap.set({ "n", "v" }, "<leader>c", ":commentary<cr>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>c", ":Commentary<cr>", { silent = true })
 
 require("nvim-autopairs").setup({})
 
