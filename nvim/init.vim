@@ -8,7 +8,8 @@ set clipboard+=unnamedplus
 set tabstop=2
 set shiftwidth=2
 set expandtab
-set syntax=on
+syntax enable
+
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'projekt0n/github-nvim-theme'
