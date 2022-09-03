@@ -1,5 +1,5 @@
 {
-  "snippets.priority": 1,
+  "diagnostic.checkCurrentLine": true
   "coc.source.buffer.priority": 99,
   "coc.source.around.priority": 99,
   "coc.source.file.priority": 99
