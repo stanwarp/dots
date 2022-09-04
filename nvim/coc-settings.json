@@ -3,4 +3,7 @@
   "coc.source.buffer.priority": 99,
   "coc.source.around.priority": 99,
   "coc.source.file.priority": 99
+  "svelte.enable-ts-plugin": true,
+  "snippets.ultisnips.enable": false,
+  "snippets.priority": 1
 }
