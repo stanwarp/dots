@@ -13,6 +13,7 @@ syntax enable
 set nowrap
 set nocompatible
 set iskeyword+=-
+set foldmethod=indent
 
 call plug#begin()
   Plug 'chrisbra/Recover.vim'
@@ -26,9 +27,8 @@ call plug#begin()
   Plug 'sheerun/vim-polyglot' " for frameworks like react or svelte
   Plug 'itchyny/lightline.vim'
   Plug 'tpope/vim-fugitive'
-
   Plug 'Shougo/neco-vim'
-Plug 'neoclide/coc-neco'
+  Plug 'neoclide/coc-neco'
 call plug#end()
 
 colorscheme github_dark_default
@@ -114,12 +114,12 @@ colorscheme github_dark_default
   nnoremap <silent><nowait> <leader>.p  :<C-u>CocListResume<CR>
 """
 """ lightline
-  let g:lightline = { 'colorscheme': 'solarized' }
+  let g:lightline = { 'colorscheme': 'powerlineish' }
 
   let g:lightline['active'] = {
         \   'left': [['mode', 'paste'], ['readonly', 'relativepath', 'modified']],
         \   'right': [ [], [ 'gitbranch' ], [ 'filetype' ]]
         \ }
-  let g:lightline['component'] = { 'filetype': '%{&filetype}' }
+   let g:lightline['component'] = { 'filetype': '%{&filetype}' }
   let g:lightline['component_function'] = { 'gitbranch': 'fugitive#head' }
 """
