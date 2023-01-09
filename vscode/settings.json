@@ -1,0 +1,64 @@
+{
+  "editor.folding": true,
+  "git.autofetch": true,
+  "telemetry.telemetryLevel": "off",
+  "editor.tabSize": 2,
+  "extensions.ignoreRecommendations": true,
+  "npm.enableRunFromFolder": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "merge-conflict.decorators.enabled": false,
+  // fonts
+  "editor.fontSize": 15,
+  "editor.fontFamily": "'HarmonyOS Sans','Cascadia Code','Noto Sans Mono',微软雅黑,'Noto Sans CJK SC'",
+  "editor.codeLensFontFamily": "'Hack Nerd Font Mono'",
+  "editor.inlayHints.fontFamily": "'Hack Nerd Font Mono",
+  "scm.inputFontFamily": "'Hack Nerd Font Mono'",
+  "debug.console.fontFamily": "'Hack Nerd Font Mono",
+  "terminal.integrated.fontFamily": "'Hack Nerd Font Mono'",
+  "editor.fontWeight": 550,
+
+  // minimal
+  "workbench.startupEditor": "none",
+  "editor.minimap.enabled": false,
+  "editor.overviewRulerBorder": false,
+  "editor.hideCursorInOverviewRuler": true,
+  "workbench.editor.showIcons": false,
+  "workbench.activityBar.visible": false,
+  "workbench.statusBar.visible": true,
+  "editor.bracketPairColorization.enabled": false,
+
+
+  // formatting
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.layoutControl.enabled": false,
+  "workbench.sideBar.location": "right",
+  "editor.smoothScrolling": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.fontLigatures": true,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": false,
+  "editor.guides.bracketPairs": false,
+  "workbench.layoutControl.type": "menu",
+  "window.titleBarStyle": "custom",
+  "editor.minimap.showSlider": "mouseover",
+  "security.workspace.trust.enabled": false,
+  "update.mode": "manual",
+  "workbench.colorTheme": "GitHub Dark Default",
+  "editor.autoClosingBrackets": "beforeWhitespace",
+  "terminal.external.osxExec": "iTerm.app",
+  "window.zoomLevel": 1,
+  "editor.lineNumbers": "relative",
+
+  // neovim
+  "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.darwin": "/Users/Stas/.config/nvim/init.vim",
+
+}  
