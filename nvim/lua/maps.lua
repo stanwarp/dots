@@ -1,0 +1,37 @@
+local map = vim.keymap.set
+--vim.g.mapleader = ","
+
+-- map("i", "<C-c>", "<Esc>")
+-- map("i", "<C-c>", "<Esc>")
+-- map('n', '<C-a>', 'gg<S-v>G')
+vim.keymap.set("x", "<leader>p", [["_dP]])
+map('n', "<C-d>", "<C-d>zz")
+map('n', "<C-u>", "<C-u>zz")
+map('n', 'te', ':tabedit')
+-- map('n', 'dd', '"_dd')
+-- map('v', 'd', '"_d')
+map("x", "<leader>p", "\"_dP")
+map("n", "<leader>w", ":lua vim.lsp.buf.format({async = false})<cr>:w<cr>", { silent = true })
+
+map('n', 'ss', ':split<Return><C-w>w')
+map('n', 'sv', ':vsplit<Return><C-w>w')
+map('n', 's<Tab>', '<C-w>w')
+map('n', 'sh', '<C-w>h')
+map('n', 'sk', '<C-w>k')
+map('n', 'sj', '<C-w>j')
+map('n', 'sl', '<C-w>l')
+map('n', '<C-left>', '<C-w><')
+map('n', '<C-right>', '<C-w>>')
+map('n', '<C-up>', '<C-w>+')
+map('n', '<C-down>', '<C-w>-')
+-- Switch between tabs
+-- vim.keymap.set("n", "<leader>l", function()
+--   pcall(vim.cmd, [[checktime]])
+--   vim.api.nvim_feedkeys("gt", "n", true)
+-- end)
+
+-- vim.keymap.set("n", "<leader>h", function()
+--   pcall(vim.cmd, [[checktime]])
+--   vim.api.nvim_feedkeys("gT", "n", true)
+-- end)
+map("x", "<leader>p", [["_dP]])

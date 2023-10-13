@@ -1,0 +1,12 @@
+if not vim.g.vscode then
+vim.cmd [[colorscheme rose-pine]]
+else
+  return {{
+  "LazyVim/LazyVim",
+  opts = {
+    colorscheme = ""
+  }
+}}
+end
+
+

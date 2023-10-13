@@ -1,0 +1,18 @@
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>a", mark.toggle_file)
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+vim.keymap.set("n", "<leader>hca", mark.clear_all)
+vim.keymap.set("n", "<leader>hq", mark.to_quickfix_list)
+vim.keymap.set("n", "<leader>1", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<leader>2", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<leader>3", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<leader>4", function() ui.nav_file(4) end)
+vim.keymap.set("n", "<leader>5", function() ui.nav_file(5) end)
+
+vim.keymap.set("n", "<leader>ha1", function() mark.set_current_at(1) end)
+vim.keymap.set("n", "<leader>ha2", function() mark.set_current_at(2) end)
+vim.keymap.set("n", "<leader>ha3", function() mark.set_current_at(3) end)
+vim.keymap.set("n", "<leader>ha4", function() mark.set_current_at(4) end)
+vim.keymap.set("n", "<leader>ha5", function() mark.set_current_at(5) end)
